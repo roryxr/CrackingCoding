@@ -1,0 +1,148 @@
+
+class Node{
+	int value;
+	Node next;
+	public Node(int data){
+		value = data;
+		next = null;
+	}
+	
+	public void insert(int data){
+		Node n = new Node(data);
+		Node curr = this;	
+		while(curr.next != null){
+			curr = curr.next;
+		}
+		curr.next = n;
+	}
+	
+	public void delete(int data){
+		Node n = this;
+		if(n == null || (n.next == null && n.value == data)) n = null;
+		while(n.next != null){
+			if(n.next.value == data){
+				n.next = n.next.next;
+			}
+			n = n.next;
+		}
+	}
+	
+	public void displayList(){
+		Node n = this;
+		while(n != null){
+			System.out.print(n.value+" ");
+			n = n.next;
+		}
+		System.out.println();
+	}
+	
+	public void makeLoop(){
+		Node fp = this; // fast pointer
+		Node sp = this; // slow pointer
+		while(fp.next != null && sp.next != null){
+			fp = fp.next;
+			sp = sp.next;
+			if(fp.next != null) fp = fp.next;
+		}
+		
+		fp.next = sp;
+		System.out.println("Node "+fp.value + " Attached to Node "+sp.value);
+	}
+	
+	public boolean hasLoop(){
+		Node fp = this;
+		Node sp = this;
+		while(fp.next != null && sp.next != null){
+			fp = fp.next;
+			sp = sp.next;
+			if(fp.next != null){
+				fp = fp.next;
+			}
+			if(fp == sp){
+				return true;
+			}
+		}
+		return false;
+	}
+	public void findLoop(){
+		Node n1 = this;
+		Node n2 = this;
+		while(true){
+			n1 = n1.next;
+			n2 = n2.next.next;
+			if(n1 == n2) break;
+		}
+		
+		n1 = this;
+		while(n1 != n2){
+			n1 = n1.next;
+			n2 = n2.next;
+		}
+		System.out.println("The loop starts at value "+n1.value);
+	}
+	
+	public int printFromTail(int n){
+		if(this.next == null) return 0;
+		int ct = this.next.printFromTail(n);
+		ct++;
+		if(ct <= n) System.out.print(this.next.value+" ");
+		return ct;
+	}
+}
+
+public class FindLoopInLinkedList {
+	public static void main(String[] args){
+		Node head1 = new Node(1);
+		Node head2 = new Node(1);
+		//n.displayList();
+		head1.insert(2);
+		head1.insert(3);
+		head1.insert(4);
+		head1.insert(90);
+		head2.insert(3);
+		head2.insert(5);
+		head2.insert(7);
+		head2.insert(11);
+		head2.insert(78);
+		head1.displayList();
+		head2.displayList();
+		Node result = mergeLists(head1, head2);
+		result.displayList();
+		/*
+		if(n.hasLoop()){
+			n.findLoop();
+		} else {
+			System.out.println("This linked list does not have a loop.");
+		}
+		n.makeLoop();
+		if(n.hasLoop()){
+			n.findLoop();
+		} else {
+			System.out.println("This linked list does not have a loop.");
+		}
+		*/
+		//n.printFromTail(4);
+	}
+	
+    public static Node mergeLists(Node head1, Node head2) {
+        // your code goes here
+             Node prev1 = head1;
+             Node curr = new Node(0);
+             Node prev2 = head2;
+             while(prev1 != null && prev2 != null){
+                 if(prev1.value <= prev2.value){
+                	curr.next = prev1;
+                	curr = curr.next;
+                	prev1 = prev1.next;
+                	curr.next = prev2;              	
+                 } else {
+                	curr.next = prev2;
+                    curr = curr.next;
+                    prev2 = prev2.next;
+                    curr.next = prev1;
+                 }
+             }
+             if(head1.value <= head2.value) return head1;
+             else return head2;
+    }
+}
