@@ -1,59 +1,59 @@
+import java.util.Hashtable;
 class RemoveDuplicates
 {
 	public static void main(String[] args){
-		Node n = new Node(5);
+		SList n = new SList();
+		n.add(5);
 		n.display();
 		n.add(7);
 		n.display();
 		n.add(8);
 		n.display();
-		n.delete(6);
-		n.display();
 		n.delete(7);
 		n.display();
-		n.delete(8);
+		removeDups1(n);
 		n.display();
-		n.delete(5);
+		n.add(6);
+		n.add(8);
+		n.add(5);
+		n.add(5);
+		n.display();
+		removeDups2(n);
 		n.display();
 	}
-}
 
-class Node{
-	private int key;
-	Node next;
-
-	public Node(int val){
-		key = val;
-	}
-
-	public void add(int val){
-		Node curr = new Node(val);
-		Node n = this;
-		while(n.next != null) n = n.next;
-		n.next = curr;
-	}
-
-	public void delete(int val){
-		Node n = this;
-		if(n.key == val){
-			n = n.next;
-		} else {
-			while(n.next != null){
-				if(n.next.key == val){
-					n.next = n.next.next;
-					return;
-				}
-			n = n.next;
+	/* Using a hash table makes the time complexity O(n) which is efficient */
+	public static void removeDups1(SList l){
+		Hashtable<Integer, Boolean> table = new Hashtable<Integer, Boolean>();
+		SNode n = l.head;
+		SNode curr = null;
+		while(n != null){
+			if(table.containsKey(n.key)){
+				curr.next = n.next;
+			} else {
+				table.put(n.key, true);
+				curr = n;
 			}
+			n = n.next;
 		}
 	}
 
-	public void display(){
-		Node curr = this;
-		while(curr != null){
-			System.out.print(curr.key+" ");
-			curr = curr.next;
+	/* If no buffer is allowed, it runs in O(n^2) time with O(1) space with the following method */
+	public static void removeDups2(SList l){
+		SNode first = l.head;
+		SNode second;
+		if(first == null) return;
+		while (first != null){
+			second = first;
+			while(second.next != null){
+				if(first.key == second.next.key){
+					second.next = second.next.next;
+				} else {
+					second = second.next;
+				}
+			}
+			first = first.next;
 		}
-			System.out.println();
 	}
 }
+
