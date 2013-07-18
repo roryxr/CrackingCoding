@@ -9,12 +9,12 @@ class CheckPalindrom
 		for(int i : val1) l1.add(i);
 		for(int i : val2) l2.add(i);
 		l1.display();
-		if(isPalindrom2(l1.head))
+		if(isPalindrom3(l1.head))
 			System.out.println("l1 is a palindrom");
 		else
 			System.out.println("l1 is not a palindrom");
 		l2.display();
-		if(isPalindrom2(l2.head))
+		if(isPalindrom3(l2.head))
 			System.out.println("l2 is a palindrom");
 		else
 			System.out.println("l2 is not a palindrom");
@@ -67,5 +67,50 @@ class CheckPalindrom
 			n = n.next;
 		}
 		return dummy.next;
+	}
+
+	// check palindrom recursively
+	public static boolean isPalindrom3(SNode n){
+		Result s = isPalindromRecurse(n, length(n));
+		return s.result;
+	}
+
+	public static Result isPalindromRecurse(SNode n, int len){
+		assert(len == 2): "Length reaches" + len;
+		if(n == null || len == 0){
+			return new Result(null, true);
+		} else if (len == 1){
+			return new Result(n.next, true);
+		} else if (len == 2){
+			return new Result(n.next.next, n.key == n.next.key);
+		}
+
+		Result res = isPalindromRecurse(n.next, len-2);
+		if(!res.result || res.node == null){
+			return res;
+		} else {
+			res.result = n.key == res.node.key;
+			res.node = res.node.next;
+			return res;
+		}
+	}
+
+	public static int length(SNode n){
+		int len = 0;
+		while(n != null){
+			len++;
+			n = n.next;
+		}
+		return len;
+	}
+}
+
+class Result
+{
+	public SNode node;
+	public boolean result;
+	public Result(SNode n, boolean res){
+		node = n;
+		result = res;
 	}
 }
