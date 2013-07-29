@@ -6,15 +6,17 @@ class CommonAncestor
 		Tree t = new Tree();
 		for(int i : a) t.add(i);
 		TreeNode root = t.root;
-		TreeNode[] p = new TreeNode[3];
-		TreeNode[] q = new TreeNode[3];
+		TreeNode[] p = new TreeNode[4];
+		TreeNode[] q = new TreeNode[4];
 		p[0] = root.left.left;
 		q[0] = root.left.right.right;
 		p[1] = root.left.left.right;
 		q[1] = root.right.left.right;
 		p[2] = root.left.left.left;
 		q[2] = new TreeNode(23);
-		for(int i=0; i<3; i++){
+		p[3] = root.left.left.left.right;
+		q[3] = root.left;
+		for(int i=0; i<4; i++){
 			TreeNode result = commonAncestor(root, p[i], q[i]);
 			if(result == null) System.out.println("One of the nodes is not in the tree.");
 			else {
@@ -44,7 +46,7 @@ class CommonAncestor
 
 	public static TreeNode commonAncestor(TreeNode root, TreeNode p, TreeNode q){
 		if(!covers(root, p) || !covers(root, q)) return null;
-		else return findAncestor2(root, p, q);
+		else return findAncestor3(root, p, q);
 	}
 
 	// This method can be used only when each node has a pointer to its parent. Also, extra data structure was used here.(HashSet)
@@ -59,5 +61,19 @@ class CommonAncestor
 			q = q.p;
 		}
 		return root;
+	}
+
+	// This method is similar to this fisrt but is more efficient since it does not scan the tree several times and once it finds the p or q, it would return.
+
+	public static TreeNode findAncestor3(TreeNode root, TreeNode p, TreeNode q){
+		if(root == null) return null;
+		if(root == p || root == q) return root;
+		TreeNode rx = findAncestor3(root.left, p, q);
+		if(rx != null && rx != p && rx != q) return rx;
+		TreeNode ry = findAncestor3(root.right, p, q);
+		if(ry != null && ry != p && ry != q) return ry;
+		
+		if(rx != null && ry != null) return root;
+		return rx == null ? ry : rx;
 	}
 }
