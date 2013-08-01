@@ -1,13 +1,13 @@
 class FloatToBit
 {
 	public static void main(String[] args){
-		double f = (double)0.625;
-		System.out.println("Float value " + f + " in binary is " + doubleToBit3(f));
+		float f = 0.672342342f;
+		System.out.println("Float value " + f + " in binary is " + floatToBit3(f));
 	}
 
 
 	// My method did not do an "ERROR" check
-	public static String doubleToBit(double num){
+	public static String floatToBit(float num){
 		char[] ch =  new char[32];
 		ch[0] = '0';
 		ch[1] = '.';
@@ -31,7 +31,7 @@ class FloatToBit
 	}
 
 	// Better method using a StringBuilder
-	public static String doubleToBit2(double num){
+	public static String floatToBit2(float num){
 		if(num <= 0 || num >= 1) return "ERROR";
 		StringBuilder sb = new StringBuilder();
 		sb.append("0");
@@ -49,9 +49,9 @@ class FloatToBit
 	}
 	
 	// Another method using fraction 0.5, 0.25, 0.125, ....
-	public static String doubleToBit3(double num){
+	public static String floatToBit3(float num){
 		if(num <= 0 || num >= 1) return "ERROR";
-		double frac = (double)0.5;
+		float frac = 0.5f;
 		StringBuilder sb = new StringBuilder();
 		sb.append("0");
 		sb.append(".");

@@ -1,0 +1,121 @@
+
+class Node{
+	int value;
+	Node next;
+	public Node(int data){
+		value = data;
+		next = null;
+	}
+	
+	public void insert(int data){
+		Node n = new Node(data);
+		Node curr = this;	
+		while(curr.next != null){
+			curr = curr.next;
+		}
+		curr.next = n;
+	}
+	
+	public void delete(int data){
+		Node n = this;
+		if(n == null || (n.next == null && n.value == data)) n = null;
+		while(n.next != null){
+			if(n.next.value == data){
+				n.next = n.next.next;
+			}
+			n = n.next;
+		}
+	}
+	
+	public void displayList(){
+		Node n = this;
+		while(n != null){
+			System.out.print(n.value+" ");
+			n = n.next;
+		}
+		System.out.println();
+	}
+	
+	public void makeLoop(){
+		Node fp = this; // fast pointer
+		Node sp = this; // slow pointer
+		while(fp.next != null && sp.next != null){
+			fp = fp.next;
+			sp = sp.next;
+			if(fp.next != null) fp = fp.next;
+		}
+		
+		fp.next = sp;
+		System.out.println("Node "+fp.value + " Attached to Node "+sp.value);
+	}
+	
+	public boolean hasLoop(){
+		Node fp = this;
+		Node sp = this;
+		while(fp.next != null && sp.next != null){
+			fp = fp.next;
+			sp = sp.next;
+			if(fp.next != null){
+				fp = fp.next;
+			}
+			if(fp == sp){
+				return true;
+			}
+		}
+		return false;
+	}
+	public void findLoop(){
+		Node n1 = this;
+		Node n2 = this;
+		while(true){
+			n1 = n1.next;
+			n2 = n2.next.next;
+			if(n1 == n2) break;
+		}
+		
+		n1 = this;
+		while(n1 != n2){
+			n1 = n1.next;
+			n2 = n2.next;
+		}
+		System.out.println("The loop starts at value "+n1.value);
+	}
+}
+
+public class FindLoopInLinkedList {
+	public static void main(String[] args){
+		Node n = new Node(4);
+		//n.displayList();
+		n.insert(6);
+		//n.displayList();
+		n.insert(8);
+		//n.displayList();
+		n.insert(5);
+		n.insert(15);
+		n.insert(10);
+		n.displayList();
+		n.delete(7);
+		n.displayList();
+		n.delete(5);
+		n.displayList();
+		n.insert(1);
+		n.insert(29);
+		n.insert(68);
+		n.insert(30);
+		n.insert(76);
+		n.displayList();
+		/*
+		if(n.hasLoop()){
+			n.findLoop();
+		} else {
+			System.out.println("This linked list does not have a loop.");
+		}
+		n.makeLoop();
+		if(n.hasLoop()){
+			n.findLoop();
+		} else {
+			System.out.println("This linked list does not have a loop.");
+		}
+		*/
+	}
+}

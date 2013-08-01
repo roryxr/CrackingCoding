@@ -1,0 +1,59 @@
+
+
+class Node{
+	int value;
+	Node next;
+	public Node(int data){
+		value = data;
+		next = null;
+	}
+	
+	public void insert(int data){
+		Node n = new Node(data);
+		Node curr = this;
+		while(curr != null){
+			curr = curr.next;
+		}
+		curr.next = n;
+	}
+	
+	public void delete(int data){
+		Node n = this;
+		if(n == null || (n.next == null && n.value == data)) n = null;
+		while(n.next != null){
+			if(n.next.value == data){
+				n.next = n.next.next;
+			}
+			n = n.next;
+		}
+	}
+	
+	public void displayList(){
+		Node n = this;
+		if(n == null) System.out.println("This is an empty Linked List!");
+		while(n != null){
+			System.out.print(n.value+" ");
+			n = n.next;
+		}
+		System.out.println();
+	}
+}
+
+public class FindLoopInLinkedList {
+	public static void main(String[] args){
+		Node n = new Node(4);
+		n.displayList();
+		n.insert(6);
+		n.displayList();
+		n.insert(8);
+		n.displayList();
+		n.insert(5);
+		n.insert(15);
+		n.insert(10);
+		n.displayList();
+		n.delete(7);
+		n.displayList();
+		n.delete(5);
+		n.displayList();
+	}
+}
